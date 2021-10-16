@@ -284,9 +284,6 @@ public class Distance : MonoBehaviour
         StartCoroutine("StartCount");
         oldPosition = transform.position;
         FirstDistance = _Boat.transform.position;
-
-        PlayerPrefs.DeleteKey("BestRecord_1km");
-        PlayerPrefs.DeleteKey("SecondRecord_1km");
     }
 
 
