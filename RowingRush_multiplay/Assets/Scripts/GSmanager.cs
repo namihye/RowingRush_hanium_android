@@ -1,31 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Text;
 
 [System.Serializable]
 public class GoogleData
 {
-    public string order, result, msg, distance, time, speed;
+    public string order, result, msg, myranking1, myranking2, myranking3, curID; 
+    public int distance, time, speed;
 }
 
 
 public class GSmanager : MonoBehaviour
 {
     const string URL = "https://script.google.com/macros/s/AKfycbxc5R_Y7zTad80LiUs_O-6wE889DjIquIuirMARMTgOFqGOdsJ3/exec";
+    //const string URL2 = "https://script.google.com/macros/s/AKfycbzurOOI8hf1HuSgWm3tPcUUi2KjvqsoD2XUvCwulWpxD-YPUAvBqiHpsQJmru1u-Bcx/exec";
     public GoogleData GD;
 
 
-
+    public Canvas canvas;
     public InputField IDInput, PassInput;
-    public TextMeshProUGUI message, myID;
+    public TextMeshProUGUI message, myID, myRanking1, myRanking2, myRanking3;
     string id, pass;
 
     string jsondata;
-
+    
 
 
 
@@ -42,7 +47,7 @@ public class GSmanager : MonoBehaviour
     {
         if (!SetIDPass())
         {
-            print("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ ºñ¾îÀÖ½À´Ï´Ù");
+            print("ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ ë¹„ì–´ìˆìŠµë‹ˆë‹¤");
             message.text = "ID or password is blank";
             return;
         }
@@ -59,7 +64,7 @@ public class GSmanager : MonoBehaviour
     {
         if (!SetIDPass())
         {
-            print("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ ºñ¾îÀÖ½À´Ï´Ù");
+            print("ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ ë¹„ì–´ìˆìŠµë‹ˆë‹¤");
             message.text = "ID or password is blank";
             return;
         }
@@ -71,6 +76,9 @@ public class GSmanager : MonoBehaviour
         form.AddField("pass", pass);
 
         StartCoroutine(Post(form));
+
+        myID.text = GD.curID;
+        DontDestroyOnLoad(canvas);
 
     }
 
@@ -104,6 +112,7 @@ public class GSmanager : MonoBehaviour
             if (www.isDone)
             {
                 Response(www.downloadHandler.text);
+               // print("1");
 
                 string[] data = www.downloadHandler.text.Split(new char[] { '"' });
                 message.text = data[data.Length - 2];
@@ -118,33 +127,114 @@ public class GSmanager : MonoBehaviour
             }
             else
             {
-                print("À¥ÀÇ ÀÀ´äÀÌ ¾ø½À´Ï´Ù.");
+                print("ì›¹ì˜ ì‘ë‹µì´ ì—†ìŠµë‹ˆë‹¤.");
                 message.text = "No response from the web.";
             }
         }
     }
 
+    IEnumerator Rank(WWWForm form)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(URL, form))
+        {
+            yield return www.SendWebRequest();
+            print("rank1");
+            //form.AddField("order", "Ranking");
+
+            if (www.isDone)
+            {
+
+
+                print("rank2");
+
+                Response2(www.downloadHandler.text);
+                print("rank3");
+
+               // if (GD.result == id)
+                //{
+                  //  print("rank4");
+
+                    //myRanking.text = GD.msg;
+                //}
+
+                print(GD.order + "ì„ ì‹¤í–‰í–ˆìŠµë‹ˆë‹¤. ë©”ì‹œì§€ : " + GD.msg);
+
+                myRanking1.text = GD.myranking1;
+                myRanking2.text = GD.myranking2;
+                myRanking3.text = GD.myranking3;
+                myID.text = GD.curID;
+
+
+                // myRanking.text = "R U Crazy?";
+                // Debug.Log(myRanking.text);
+                //myID.text = id;
+
+            }
+            else
+            {
+                print("ì›¹ì˜ ì‘ë‹µì´ ì—†ìŠµë‹ˆë‹¤.");
+                message.text = "No response from the web.";
+            }
+        }
+    }
+
+    public void Ranking()
+    {
+
+        WWWForm form = new WWWForm();
+
+        form.AddField("order", "Ranking");
+        StartCoroutine(Rank(form));
+ 
+    }
+
     void Response(string json)
     {
-        if (string.IsNullOrEmpty(json))
+
+        if(string.IsNullOrEmpty(json))
         {
             return;
         }
 
         GD = JsonUtility.FromJson<GoogleData>(json);
 
-        if (GD.result == "ERROR")
+
+        Debug.Log(GD.result);
+
+        if(GD.result == "ERROR")
         {
-            print(GD.order + "À» ½ÇÇàÇÒ ¼ö ¾ø½À´Ï´Ù. ¿¡·¯ ¸Ş½ÃÁö : " + GD.msg);
+
+            print(GD.order + "ì„ ì‹¤í–‰í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì—ëŸ¬ ë©”ì‹œì§€ : " + GD.msg);
             return;
         }
-
-        print(GD.order + "À» ½ÇÇàÇß½À´Ï´Ù. ¸Ş½ÃÁö : " + GD.msg);
+        print(GD.order + "ì„ ì‹¤í–‰í–ˆìŠµë‹ˆë‹¤. ë©”ì‹œì§€ : " + GD.msg);
 
 
     }
 
+    void Response2(string json)
+    {
+        print("ì²«ë²ˆì§¸ë°˜ì‘");
+        if (string.IsNullOrEmpty(json))
+        {
+            print("ë‘ë²ˆì§¸ë°˜ì‘");
+            return;
+        }
+        print("ì„¸ë²ˆì§¸ë°˜ì‘");
+        GD = JsonUtility.FromJson<GoogleData>(json);
+        print("ë„¤ë²ˆì§¸ë°˜ì‘");
+        Debug.Log(GD.result);
 
+        if (GD.result == "ERROR")
+        {
+
+            print(GD.order + "ì„ ì‹¤í–‰í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì—ëŸ¬ ë©”ì‹œì§€ : " + GD.msg);
+            return;
+        }
+        print(GD.order + "ì„ ì‹¤í–‰í–ˆìŠµë‹ˆë‹¤. ë©”ì‹œì§€ : " + GD.msg);
+
+
+    }
     public void SC_login()
     {
         SceneManager.LoadScene("login");

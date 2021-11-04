@@ -1047,42 +1047,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1164602935277360391, guid: d90c349721b4e694fad80a76d87b2578, type: 3}
   m_PrefabInstance: {fileID: 473683709}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &520704977
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: WaterDepthMap
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 3
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthFormat: 2
-  m_ColorFormat: 142
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &545572719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1400,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Arcade Mode
+  m_Text: arcade mode
 --- !u!222 &560501398
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2445,7 +2409,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Exercise Mode
+  m_Text: exercise mode
 --- !u!222 &1242105876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4205,7 +4169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2414850573393114030, guid: 3098ec0598b16d940b53ee528705ae29, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.25
+      value: -1.875
       objectReference: {fileID: 0}
     - target: {fileID: 2414850573393114030, guid: 3098ec0598b16d940b53ee528705ae29, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4213,7 +4177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2414850573393114030, guid: 3098ec0598b16d940b53ee528705ae29, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.32934225
+      value: -0.55187076
       objectReference: {fileID: 0}
     - target: {fileID: 2414850573393114030, guid: 3098ec0598b16d940b53ee528705ae29, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4470,6 +4434,42 @@ Transform:
   m_Father: {fileID: 384294507}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &2084622771
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterDepthMap
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 3
+  m_Width: 1024
+  m_Height: 1024
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthFormat: 2
+  m_ColorFormat: 142
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &2135860552
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
 public class Distance_arcade : MonoBehaviour
 {
+    private GSmanager scriptG;
 
     public GameObject paddle;
     public GameObject paddle1;
 
     public GameObject _Boat;
     public GameObject _Boat2;
+    public GameObject _Boat3;
+    public GameObject _Boat4;
+    public GameObject _Boat5;
+    
     public GameObject FinishMenu;
     public GameObject Ranking;
     public GameObject StartUI;
@@ -32,9 +38,18 @@ public class Distance_arcade : MonoBehaviour
 
     float curTime;
     float BoatDistance;
+    float BoatDistance2;
+    float BoatDistance3;
+    float BoatDistance4;
+    float BoatDistance5;
+    float maxBoat;
+    bool isMode;
+
+
     float speed;
     float avgSpeed;
     int TargetDistance;
+    int target;
 
     Vector3 FirstDistance = new Vector3(0, 0, 0);
     Vector3 currentPosition;
@@ -45,23 +60,23 @@ public class Distance_arcade : MonoBehaviour
     IEnumerator StartCount()
     {
         StartUI.SetActive(true);
-        //countdown 3À¸·Î º¯°æ
+        //countdown 3ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         countText.text = "3";
         countText.gameObject.SetActive(true);
 
-        //1ÃÊ µÚ countdowm 2·Î º¯°æ
+        //1ï¿½ï¿½ ï¿½ï¿½ countdowm 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         yield return new WaitForSecondsRealtime(1);
         countText.gameObject.SetActive(false);
         countText.text = "2";
         countText.gameObject.SetActive(true);
 
-        //1ÃÊ µÚ countdowm 1·Î º¯°æ
+        //1ï¿½ï¿½ ï¿½ï¿½ countdowm 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         yield return new WaitForSecondsRealtime(1);
         countText.gameObject.SetActive(false);
         countText.text = "1";
         countText.gameObject.SetActive(true);
 
-        //1ÃÊ µÚ countdown go·Î º¯°æ
+        //1ï¿½ï¿½ ï¿½ï¿½ countdown goï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         yield return new WaitForSecondsRealtime(1);
         countText.gameObject.SetActive(false);
         countText.text = "GO!";
@@ -72,6 +87,9 @@ public class Distance_arcade : MonoBehaviour
         StartCoroutine("Timer");
         _Boat.GetComponent<BoatControl>().enabled = true;
         _Boat2.GetComponent<Boat2Control>().enabled = true;
+        _Boat3.GetComponent<Boat2Control>().enabled = true;
+        _Boat4.GetComponent<Boat2Control>().enabled = true;
+        _Boat5.GetComponent<Boat2Control>().enabled = true;
 
     }
 
@@ -116,10 +134,10 @@ public class Distance_arcade : MonoBehaviour
 
         if (TargetDistance == 1000)
         {
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 1µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             if (avgSpeed > PlayerPrefs.GetFloat("BestSpeed_1km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 1µî ±â·ÏÀ¸·Î ³õ°í ±âÁ¸ 1,2µî ±â·ÏÀ» 2,3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1,2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 2,3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_1km", PlayerPrefs.GetFloat("SecondSpeed_1km"));
                 PlayerPrefs.SetFloat("SecondSpeed_1km", PlayerPrefs.GetFloat("BestSpeed_1km"));
                 PlayerPrefs.SetFloat("BestSpeed_1km", avgSpeed);
@@ -128,20 +146,20 @@ public class Distance_arcade : MonoBehaviour
                 PlayerPrefs.SetString("SecondRecord_1km", PlayerPrefs.GetString("BestRecord_1km"));
                 PlayerPrefs.SetString("BestRecord_1km", RecordText.text);
             }
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 2µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             else if (avgSpeed > PlayerPrefs.GetFloat("SecondSpeed_1km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 2µî ±â·ÏÀ¸·Î ³õ°í ±âÁ¸ 2µî ±â·ÏÀ» 3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_1km", PlayerPrefs.GetFloat("SecondSpeed_1km"));
                 PlayerPrefs.SetFloat("SecondSpeed_1km", avgSpeed);
 
                 PlayerPrefs.SetString("ThidRecord_1km", PlayerPrefs.GetString("SecondRecord_1km"));
                 PlayerPrefs.SetString("SecondRecord_1km", RecordText.text);
             }
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 3µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             else if (avgSpeed > PlayerPrefs.GetFloat("ThirdSpeed_1km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_1km", avgSpeed);
 
                 PlayerPrefs.SetString("ThirdRecord_1km", RecordText.text);
@@ -154,10 +172,10 @@ public class Distance_arcade : MonoBehaviour
 
         if (TargetDistance == 3000)
         {
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 1µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             if (avgSpeed > PlayerPrefs.GetFloat("BestSpeed_3km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 1µî ±â·ÏÀ¸·Î ³õ°í ±âÁ¸ 1,2µî ±â·ÏÀ» 2,3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1,2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 2,3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_3km", PlayerPrefs.GetFloat("SecondSpeed_3km"));
                 PlayerPrefs.SetFloat("SecondSpeed_3km", PlayerPrefs.GetFloat("BestSpeed_3km"));
                 PlayerPrefs.SetFloat("BestSpeed_3km", avgSpeed);
@@ -166,20 +184,20 @@ public class Distance_arcade : MonoBehaviour
                 PlayerPrefs.SetString("SecondRecord_3km", PlayerPrefs.GetString("BestRecord_3km"));
                 PlayerPrefs.SetString("BestRecord_3km", RecordText.text);
             }
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 2µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             else if (avgSpeed > PlayerPrefs.GetFloat("SecondSpeed_3km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 2µî ±â·ÏÀ¸·Î ³õ°í ±âÁ¸ 2µî ±â·ÏÀ» 3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_3km", PlayerPrefs.GetFloat("SecondSpeed_3km"));
                 PlayerPrefs.SetFloat("SecondSpeed_3km", avgSpeed);
 
                 PlayerPrefs.SetString("ThidRecord_3km", PlayerPrefs.GetString("SecondRecord_3km"));
                 PlayerPrefs.SetString("SecondRecord_3km", RecordText.text);
             }
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 3µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             else if (avgSpeed > PlayerPrefs.GetFloat("ThirdSpeed_3km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_3km", avgSpeed);
 
                 PlayerPrefs.SetString("ThirdRecord_3km", RecordText.text);
@@ -192,10 +210,10 @@ public class Distance_arcade : MonoBehaviour
 
         if (TargetDistance == 5000)
         {
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 1µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             if (avgSpeed > PlayerPrefs.GetFloat("BestSpeed_5km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 1µî ±â·ÏÀ¸·Î ³õ°í ±âÁ¸ 1,2µî ±â·ÏÀ» 2,3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1,2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 2,3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_5km", PlayerPrefs.GetFloat("SecondSpeed_5km"));
                 PlayerPrefs.SetFloat("SecondSpeed_5km", PlayerPrefs.GetFloat("BestSpeed_5km"));
                 PlayerPrefs.SetFloat("BestSpeed_5km", avgSpeed);
@@ -204,20 +222,20 @@ public class Distance_arcade : MonoBehaviour
                 PlayerPrefs.SetString("SecondRecord_5km", PlayerPrefs.GetString("BestRecord_5km"));
                 PlayerPrefs.SetString("BestRecord_5km", RecordText.text);
             }
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 2µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             else if (avgSpeed > PlayerPrefs.GetFloat("SecondSpeed_5km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 2µî ±â·ÏÀ¸·Î ³õ°í ±âÁ¸ 2µî ±â·ÏÀ» 3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_5km", PlayerPrefs.GetFloat("SecondSpeed_5km"));
                 PlayerPrefs.SetFloat("SecondSpeed_5km", avgSpeed);
 
                 PlayerPrefs.SetString("ThidRecord_5km", PlayerPrefs.GetString("SecondRecord_5km"));
                 PlayerPrefs.SetString("SecondRecord_5km", RecordText.text);
             }
-            //ÇöÀç ±â·ÏÀÌ »õ·Î¿î 3µî ±â·ÏÀÏ ¶§
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             else if (avgSpeed > PlayerPrefs.GetFloat("ThirdSpeed_5km", 0))
             {
-                //ÇöÀç ±â·ÏÀ» 3µî ±â·ÏÀ¸·Î ¾÷µ¥ÀÌÆ®
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 PlayerPrefs.SetFloat("ThirdSpeed_5km", avgSpeed);
 
                 PlayerPrefs.SetString("ThirdRecord_5km", RecordText.text);
@@ -280,6 +298,13 @@ public class Distance_arcade : MonoBehaviour
 
     public void Start()
     {
+        isMode = (PlayerPrefs.GetString("userMode")=="exercise");
+        if(isMode){
+            _Boat2.SetActive(false);
+            _Boat3.SetActive(false);
+            _Boat4.SetActive(false);
+            _Boat5.SetActive(false);
+        };
         TargetDistance = PlayerPrefs.GetInt("TargetDistance");
         StartCoroutine("StartCount");
         oldPosition = transform.position;
@@ -291,7 +316,14 @@ public class Distance_arcade : MonoBehaviour
     {
         if (_Time.activeSelf == true)
         {
-            BoatDistance = Vector3.Distance(FirstDistance, _Boat.transform.position)*5;
+            BoatDistance = Vector3.Distance(FirstDistance, _Boat.transform.position)*2;
+            BoatDistance2 = Vector3.Distance(FirstDistance, _Boat2.transform.position)*2;
+            BoatDistance3 = Vector3.Distance(FirstDistance, _Boat3.transform.position)*2;
+            BoatDistance4 = Vector3.Distance(FirstDistance, _Boat4.transform.position)*2;
+            BoatDistance5 = Vector3.Distance(FirstDistance, _Boat5.transform.position)*2;
+
+            float maxBoat = Mathf.Max(BoatDistance, BoatDistance2, BoatDistance3, BoatDistance4, BoatDistance5);
+
             StartCoroutine("CalDistance");
             StartCoroutine("CalSpeed");
 
@@ -309,17 +341,24 @@ public class Distance_arcade : MonoBehaviour
 
     void LateUpdate()
     {
-        //½Ã¿¬ ¿µ»óÀ¸·Î´Â TargetDistance/10 m °¬À» ¶§ ¸ØÃß´Â °É·Î ±¸ÇöÇØ³õÀ½ - ÃßÈÄ ¼öÁ¤ ÇÊ¿ä
-
-        if (BoatDistance > TargetDistance / 10 && isFinishMenu == true)
+        //ï¿½Ã¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ TargetDistance/10 m ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ß´ï¿½ ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
+        
+        if (maxBoat > TargetDistance/10 && isFinishMenu == true)
         {
             _Boat.GetComponent<BoatControl>().enabled = false;
             _Boat2.GetComponent<Boat2Control>().enabled = false;
+            _Boat3.GetComponent<Boat2Control>().enabled = false;
+            _Boat4.GetComponent<Boat2Control>().enabled = false;
+            _Boat5.GetComponent<Boat2Control>().enabled = false;
+
             StopCoroutine("Timer");
             StopCoroutine("CalDistance");
             StopCoroutine("CalSpeed");
             FinishMenu.SetActive(true);
             StartCoroutine("curScore");
+            
+            scriptG = GameObject.Find("GSmanager").GetComponent<GSmanager>();
+            scriptG.SetValue((TargetDistance / 1000).ToString(), curTimeText.text, avgSpeed.ToString("F0"));
         }
 
     }

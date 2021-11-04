@@ -1441,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2414850573393114030, guid: 3098ec0598b16d940b53ee528705ae29, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1068137
+      value: -0.55187076
       objectReference: {fileID: 0}
     - target: {fileID: 2414850573393114030, guid: 3098ec0598b16d940b53ee528705ae29, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4065,7 +4065,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957387091}
   m_CullTransparentMesh: 1
---- !u!84 &1959637247
+--- !u!84 &2003287908
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4346,7 +4346,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exercise Mode
+  m_text: exercise mode
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: f2dcf029949142e28b974630369c8b4e, type: 2}

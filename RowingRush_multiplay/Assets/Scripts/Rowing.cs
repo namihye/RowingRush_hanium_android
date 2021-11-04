@@ -25,9 +25,8 @@ public class Rowing : MonoBehaviour
 
     void Start()
     {
-        //arcade ¸ðµå ¼±ÅÃÇß´Ù¸é Mode´Â 1, exercise ¸ðµå ¼±ÅÃÇß´Ù¸é Mode´Â 0
+        //arcade ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´Ù¸ï¿½ Modeï¿½ï¿½ 1, exercise ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´Ù¸ï¿½ Modeï¿½ï¿½ 0
         Mode = (PlayerPrefs.GetString("userMode")=="arcade");
-        Debug.Log(PlayerPrefs.GetString("userMode"));
     }
 
     void Update()
@@ -38,9 +37,9 @@ public class Rowing : MonoBehaviour
 
             if(timer > nSecond)
             {
-                //¼±ÅÃÇÑ ¸ðµåÀÇ ÁÖÇàÀ¸·Î ³Ñ¾î°¡±â
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î°¡ï¿½ï¿½
                 if (Mode) SceneManager.LoadScene("Rowing_A");
-                else SceneManager.LoadScene("Rowing_E");
+                else SceneManager.LoadScene("Rowing_A");
             }
         }
         else

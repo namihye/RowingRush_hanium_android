@@ -11,6 +11,12 @@ public class clickButton : MonoBehaviour
 
     }
 
+    public void OnClickLogin()
+    {
+        SceneManager.LoadScene("third");
+
+    }
+
     public void OnClickDistance(int TargetDistance)
     {
         PlayerPrefs.SetInt("TargetDistance", TargetDistance);

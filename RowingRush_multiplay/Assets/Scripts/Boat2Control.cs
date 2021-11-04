@@ -6,7 +6,6 @@ public class Boat2Control : MonoBehaviour
 {
     //Vector3 eulerAngleVelocity;
     private Rigidbody RB;
-    public float speed;
     //GameObject saftyRing;
 
     // Start is called before the first frame update
@@ -20,7 +19,7 @@ public class Boat2Control : MonoBehaviour
     void FixedUpdate()
     {
         //transform.Translate(new Vector3(0.0f, 0.0f, 1.0f) * Time.deltaTime);
-
+        float speed = Random.Range(0.5f,5.0f);
         Vector3 forward = transform.forward;
         var directionL = transform.forward * Time.deltaTime * speed;
         transform.Translate(directionL, Space.World);
