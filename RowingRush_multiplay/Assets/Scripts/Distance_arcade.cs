@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ using TMPro;
 
 public class Distance_arcade : MonoBehaviour
 {
+    public AudioSource audioSource;
+
     private GSmanager scriptG;
 
     public GameObject paddle;
@@ -63,9 +66,11 @@ public class Distance_arcade : MonoBehaviour
         //countdown 3���� ����
         countText.text = "3";
         countText.gameObject.SetActive(true);
+        audioSource.Play();
 
         //1�� �� countdowm 2�� ����
         yield return new WaitForSecondsRealtime(1);
+        
         countText.gameObject.SetActive(false);
         countText.text = "2";
         countText.gameObject.SetActive(true);
@@ -129,122 +134,27 @@ public class Distance_arcade : MonoBehaviour
         isFinishMenu = false;
         MainText.text = (TargetDistance / 1000).ToString() + "km RANKING TOP3";
         avgSpeed = BoatDistance / curTime;
-        RecordText.text = string.Format("time {0}    speed {1}m/s",
-            curTimeText.text, avgSpeed.ToString("F0"));
 
-        if (TargetDistance == 1000)
-        {
-            //���� ����� ���ο� 1�� ����� ��
-            if (avgSpeed > PlayerPrefs.GetFloat("BestSpeed_1km", 0))
-            {
-                //���� ����� 1�� ������� ���� ���� 1,2�� ����� 2,3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_1km", PlayerPrefs.GetFloat("SecondSpeed_1km"));
-                PlayerPrefs.SetFloat("SecondSpeed_1km", PlayerPrefs.GetFloat("BestSpeed_1km"));
-                PlayerPrefs.SetFloat("BestSpeed_1km", avgSpeed);
+        float[] alldistance = {BoatDistance, BoatDistance2, BoatDistance3, BoatDistance4, BoatDistance5};
+        Array.Sort(alldistance);
+        
+        float BestSpeed = alldistance[4] / curTime;
+        float SecondSpeed = alldistance[3] / curTime;
+        float ThirdSpeed = alldistance[2] / curTime;
 
-                PlayerPrefs.SetString("ThirdRecord_1km", PlayerPrefs.GetString("SecondRecord_1km"));
-                PlayerPrefs.SetString("SecondRecord_1km", PlayerPrefs.GetString("BestRecord_1km"));
-                PlayerPrefs.SetString("BestRecord_1km", RecordText.text);
-            }
-            //���� ����� ���ο� 2�� ����� ��
-            else if (avgSpeed > PlayerPrefs.GetFloat("SecondSpeed_1km", 0))
-            {
-                //���� ����� 2�� ������� ���� ���� 2�� ����� 3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_1km", PlayerPrefs.GetFloat("SecondSpeed_1km"));
-                PlayerPrefs.SetFloat("SecondSpeed_1km", avgSpeed);
+        RecordText.text = string.Format("distance {0}    speed {1}m/s",
+            BoatDistance.ToString("F0"), avgSpeed.ToString("F1"));
 
-                PlayerPrefs.SetString("ThidRecord_1km", PlayerPrefs.GetString("SecondRecord_1km"));
-                PlayerPrefs.SetString("SecondRecord_1km", RecordText.text);
-            }
-            //���� ����� ���ο� 3�� ����� ��
-            else if (avgSpeed > PlayerPrefs.GetFloat("ThirdSpeed_1km", 0))
-            {
-                //���� ����� 3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_1km", avgSpeed);
+        BestRecord.text = string.Format("distance {0}    speed {1}m/s",
+            alldistance[4].ToString("F0"), BestSpeed.ToString("F1"));
 
-                PlayerPrefs.SetString("ThirdRecord_1km", RecordText.text);
-            }
+        SecondRecord.text = string.Format("distance {0}    speed {1}m/s",
+            alldistance[3].ToString("F0"), SecondSpeed.ToString("F1"));
 
-            BestRecord.text = PlayerPrefs.GetString("BestRecord_1km");
-            SecondRecord.text = PlayerPrefs.GetString("SecondRecord_1km");
-            ThirdRecord.text = PlayerPrefs.GetString("ThirdRecord_1km");
-        }
+        ThirdRecord.text = string.Format("distance {0}    speed {1}m/s",
+            alldistance[2].ToString("F0"), ThirdSpeed.ToString("F1"));
 
-        if (TargetDistance == 3000)
-        {
-            //���� ����� ���ο� 1�� ����� ��
-            if (avgSpeed > PlayerPrefs.GetFloat("BestSpeed_3km", 0))
-            {
-                //���� ����� 1�� ������� ���� ���� 1,2�� ����� 2,3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_3km", PlayerPrefs.GetFloat("SecondSpeed_3km"));
-                PlayerPrefs.SetFloat("SecondSpeed_3km", PlayerPrefs.GetFloat("BestSpeed_3km"));
-                PlayerPrefs.SetFloat("BestSpeed_3km", avgSpeed);
-
-                PlayerPrefs.SetString("ThirdRecord_3km", PlayerPrefs.GetString("SecondRecord_3km"));
-                PlayerPrefs.SetString("SecondRecord_3km", PlayerPrefs.GetString("BestRecord_3km"));
-                PlayerPrefs.SetString("BestRecord_3km", RecordText.text);
-            }
-            //���� ����� ���ο� 2�� ����� ��
-            else if (avgSpeed > PlayerPrefs.GetFloat("SecondSpeed_3km", 0))
-            {
-                //���� ����� 2�� ������� ���� ���� 2�� ����� 3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_3km", PlayerPrefs.GetFloat("SecondSpeed_3km"));
-                PlayerPrefs.SetFloat("SecondSpeed_3km", avgSpeed);
-
-                PlayerPrefs.SetString("ThidRecord_3km", PlayerPrefs.GetString("SecondRecord_3km"));
-                PlayerPrefs.SetString("SecondRecord_3km", RecordText.text);
-            }
-            //���� ����� ���ο� 3�� ����� ��
-            else if (avgSpeed > PlayerPrefs.GetFloat("ThirdSpeed_3km", 0))
-            {
-                //���� ����� 3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_3km", avgSpeed);
-
-                PlayerPrefs.SetString("ThirdRecord_3km", RecordText.text);
-            }
-
-            BestRecord.text = PlayerPrefs.GetString("BestRecord_3km");
-            SecondRecord.text = PlayerPrefs.GetString("SecondRecord_3km");
-            ThirdRecord.text = PlayerPrefs.GetString("ThirdRecord_3km");
-        }
-
-        if (TargetDistance == 5000)
-        {
-            //���� ����� ���ο� 1�� ����� ��
-            if (avgSpeed > PlayerPrefs.GetFloat("BestSpeed_5km", 0))
-            {
-                //���� ����� 1�� ������� ���� ���� 1,2�� ����� 2,3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_5km", PlayerPrefs.GetFloat("SecondSpeed_5km"));
-                PlayerPrefs.SetFloat("SecondSpeed_5km", PlayerPrefs.GetFloat("BestSpeed_5km"));
-                PlayerPrefs.SetFloat("BestSpeed_5km", avgSpeed);
-
-                PlayerPrefs.SetString("ThirdRecord_5km", PlayerPrefs.GetString("SecondRecord_5km"));
-                PlayerPrefs.SetString("SecondRecord_5km", PlayerPrefs.GetString("BestRecord_5km"));
-                PlayerPrefs.SetString("BestRecord_5km", RecordText.text);
-            }
-            //���� ����� ���ο� 2�� ����� ��
-            else if (avgSpeed > PlayerPrefs.GetFloat("SecondSpeed_5km", 0))
-            {
-                //���� ����� 2�� ������� ���� ���� 2�� ����� 3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_5km", PlayerPrefs.GetFloat("SecondSpeed_5km"));
-                PlayerPrefs.SetFloat("SecondSpeed_5km", avgSpeed);
-
-                PlayerPrefs.SetString("ThidRecord_5km", PlayerPrefs.GetString("SecondRecord_5km"));
-                PlayerPrefs.SetString("SecondRecord_5km", RecordText.text);
-            }
-            //���� ����� ���ο� 3�� ����� ��
-            else if (avgSpeed > PlayerPrefs.GetFloat("ThirdSpeed_5km", 0))
-            {
-                //���� ����� 3�� ������� ������Ʈ
-                PlayerPrefs.SetFloat("ThirdSpeed_5km", avgSpeed);
-
-                PlayerPrefs.SetString("ThirdRecord_5km", RecordText.text);
-            }
-
-            BestRecord.text = PlayerPrefs.GetString("BestRecord_5km");
-            SecondRecord.text = PlayerPrefs.GetString("SecondRecord_5km");
-            ThirdRecord.text = PlayerPrefs.GetString("ThirdRecord_5km");
-        }
+        
 
         yield return new WaitForSecondsRealtime(3);
         FinishMenu.SetActive(false);
@@ -298,6 +208,7 @@ public class Distance_arcade : MonoBehaviour
 
     public void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         isMode = (PlayerPrefs.GetString("userMode")=="exercise");
         if(isMode){
             _Boat2.SetActive(false);
@@ -322,7 +233,7 @@ public class Distance_arcade : MonoBehaviour
             BoatDistance4 = Vector3.Distance(FirstDistance, _Boat4.transform.position)*2;
             BoatDistance5 = Vector3.Distance(FirstDistance, _Boat5.transform.position)*2;
 
-            float maxBoat = Mathf.Max(BoatDistance, BoatDistance2, BoatDistance3, BoatDistance4, BoatDistance5);
+            maxBoat = Mathf.Max(BoatDistance, BoatDistance2, BoatDistance3, BoatDistance4, BoatDistance5);
 
             StartCoroutine("CalDistance");
             StartCoroutine("CalSpeed");

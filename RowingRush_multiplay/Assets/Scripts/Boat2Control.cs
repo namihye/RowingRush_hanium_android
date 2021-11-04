@@ -19,7 +19,7 @@ public class Boat2Control : MonoBehaviour
     void FixedUpdate()
     {
         //transform.Translate(new Vector3(0.0f, 0.0f, 1.0f) * Time.deltaTime);
-        float speed = Random.Range(0.5f,5.0f);
+        float speed = Random.Range(0.0f,7.0f);
         Vector3 forward = transform.forward;
         var directionL = transform.forward * Time.deltaTime * speed;
         transform.Translate(directionL, Space.World);
