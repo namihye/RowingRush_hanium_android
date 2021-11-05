@@ -39,7 +39,7 @@ public class Rowing : MonoBehaviour
             {
                 //������ ����� �������� �Ѿ��
                 if (Mode) SceneManager.LoadScene("Rowing_A");
-                else SceneManager.LoadScene("Rowing_A");
+                else SceneManager.LoadScene("Rowing_E");
             }
         }
         else

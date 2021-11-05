@@ -24,7 +24,7 @@ public class BoatControl : MonoBehaviour
 
         
         float distance = Mathf.Abs((currentPosition - oldPosition).magnitude) * Time.deltaTime;
-        boat.transform.Translate(0, 0, distance*30);
+        boat.transform.Translate(0, 0, distance*15);
         oldPosition = currentPosition;
         
     }

@@ -18,8 +18,4 @@ public class Mode : MonoBehaviour
 
     }
 
-    void Start()
-    {
-        Debug.Log(PlayerPrefs.GetString("userMode"));
-    }
 }
