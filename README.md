@@ -1,2 +1,2 @@
-# RowingRush_hanium_android
- 
+# RowingRush
+운동기구와 VR 기술을 접목한 ‘헬스테인먼트’ 프로그램으로, 로잉머신을 이용하며 VR 게임을 즐길 수 있는 콘텐츠입니다.
